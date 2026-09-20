@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # BJJ API
 
 API REST para gerenciamento de equipes de Jiu-Jitsu, desenvolvida com Spring Boot, Spring Data JPA e MySQL.
@@ -195,3 +196,8 @@ No Windows:
 - O MySQL precisa estar disponível antes de iniciar a aplicação.
 - A senha do banco não deve ser versionada em ambientes reais. Prefira variáveis de ambiente ou configuração externa.
 - O relacionamento entre `Team`, `Athlete` e `Category` está modelado nas entidades, mas os endpoints dessas funcionalidades ainda podem ser ampliados.
+=======
+# bjj_api
+API RESTful desenvolvida em Java com Spring Boot para gerenciamento de academias, equipes e chaves de torneios de Jiu-Jitsu. 🥋
+>>>>>>> 53123799405274b50900b7e0ccf1cdf4647376e6
+# bjj_api
