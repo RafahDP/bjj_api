@@ -34,6 +34,12 @@ public class Match{
     private String matchStatus;
 
     public Match(){}
+    public void setId(Long id){
+        this.id = id;
+    }
+    public Long getId(){
+        return id;
+    }
     public void setAthlete1(Athlete athlete1){
         this.athlete1 = athlete1;
     }
