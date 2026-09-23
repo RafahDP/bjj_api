@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.estudos.bjj_api.entities.Match;
 import com.estudos.bjj_api.services.MatchService;
 @RestController 
-@RequestMapping(value = "/matchs")
+@RequestMapping(value = "/matches")
 public class MatchController {
     private final MatchService matchService;
     public MatchController(MatchService matchService){
@@ -32,13 +32,13 @@ public class MatchController {
         return ResponseEntity.notFound().build();
     }
     @GetMapping("/")
-    public List<Match> teamList(){
+    public List<Match> matchList(){
         return matchService.getAllMatch();
     }
     @PostMapping
-    public ResponseEntity<Match> insertTeam(@RequestBody Match match){
-       Match savedTeam = matchService.insertMatch(match);
-       return ResponseEntity.status(HttpStatus.CREATED).body(savedTeam);
+    public ResponseEntity<Match> insertMatch(@RequestBody Match match){
+       Match savedMatch = matchService.insertMatch(match);
+       return ResponseEntity.status(HttpStatus.CREATED).body(savedMatch);
     }
     @PutMapping("/{id}")
     public ResponseEntity<Match> updateMatch(@PathVariable  Long id, @RequestBody Match match){

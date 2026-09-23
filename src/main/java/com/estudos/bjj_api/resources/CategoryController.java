@@ -18,7 +18,7 @@ import com.estudos.bjj_api.entities.Category;
 import com.estudos.bjj_api.services.CategoryService;
 
 @RestController 
-@RequestMapping(value = "/category")
+@RequestMapping(value = "/categories")
 
 public class CategoryController {
     private final CategoryService categoryService;
@@ -33,14 +33,14 @@ public class CategoryController {
         }
         return ResponseEntity.notFound().build();
     }
-    @GetMapping
+    @GetMapping("/")
     public List<Category> categoryList(){
         return categoryService.getAllCategories();
     }
      @PostMapping
     public ResponseEntity<Category> insertCategory(@RequestBody Category category){
-       Category savadCategory = categoryService.insertCategory(category);
-       return ResponseEntity.status(HttpStatus.CREATED).body(savadCategory);
+       Category savedCategory = categoryService.insertCategory(category);
+       return ResponseEntity.status(HttpStatus.CREATED).body(savedCategory);
     }
      @PutMapping("/{id}")
     public ResponseEntity<Category> updateCategory(@PathVariable  Long id, @RequestBody Category category){
