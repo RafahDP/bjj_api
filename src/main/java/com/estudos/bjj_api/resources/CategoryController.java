@@ -33,7 +33,7 @@ public class CategoryController {
         }
         return ResponseEntity.notFound().build();
     }
-    @GetMapping("/")
+    @GetMapping
     public List<Category> categoryList(){
         return categoryService.getAllCategories();
     }

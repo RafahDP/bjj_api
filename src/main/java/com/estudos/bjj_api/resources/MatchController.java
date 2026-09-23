@@ -31,7 +31,7 @@ public class MatchController {
         }
         return ResponseEntity.notFound().build();
     }
-    @GetMapping("/")
+    @GetMapping
     public List<Match> matchList(){
         return matchService.getAllMatch();
     }

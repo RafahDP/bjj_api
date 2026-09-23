@@ -32,7 +32,7 @@ public class TeamController{
         }
         return ResponseEntity.notFound().build();
     }
-    @GetMapping("/")
+    @GetMapping
     public List<Team> teamList(){
         return teamService.getAllTeams();
     }

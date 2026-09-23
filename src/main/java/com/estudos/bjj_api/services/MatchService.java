@@ -3,9 +3,12 @@ package com.estudos.bjj_api.services;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.stereotype.Service;
+
 import com.estudos.bjj_api.entities.Match;
 import com.estudos.bjj_api.repositories.MatchRepository;
 
+@Service 
 public class MatchService {
     private final MatchRepository matchRepository;
     public MatchService(MatchRepository matchRepository){
