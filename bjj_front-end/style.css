@@ -1,0 +1,9 @@
+/* style.css */
+body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+/* Exemplo de efeito suave para os botões */
+button {
+    transition: all 0.2s ease-in-out;
+}
