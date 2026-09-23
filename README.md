@@ -1,11 +1,15 @@
-<<<<<<< HEAD
 # BJJ API
 
-API REST para gerenciamento de equipes de Jiu-Jitsu, desenvolvida com Spring Boot, Spring Data JPA e MySQL.
+API REST para gerenciamento de equipes, atletas, categorias e lutas de Jiu-Jitsu. O projeto foi desenvolvido com Java e Spring Boot, utilizando Spring Data JPA para persistência dos dados em MySQL.
 
-## Status do projeto
+## Funcionalidades
 
-Atualmente, a API disponibiliza o CRUD de equipes pelo recurso `/teams`. As entidades de atletas e categorias já fazem parte do modelo de dados, mas o controller de atletas ainda não possui endpoints REST implementados.
+- Cadastro, consulta, atualização e remoção de equipes.
+- Cadastro, consulta, atualização e remoção de atletas.
+- Cadastro, consulta, atualização e remoção de categorias.
+- Cadastro, consulta, atualização e remoção de lutas.
+- Associação de atletas a equipes e categorias.
+- Registro dos participantes, categoria, vencedor e status de uma luta.
 
 ## Tecnologias
 
@@ -18,9 +22,9 @@ Atualmente, a API disponibiliza o CRUD de equipes pelo recurso `/teams`. As enti
 
 ## Pré-requisitos
 
-- JDK 21 ou superior
-- MySQL em execução
-- Maven instalado ou uso do Maven Wrapper incluído no projeto
+- JDK 21 ou superior.
+- MySQL em execução.
+- Maven instalado ou Maven Wrapper, incluído no projeto.
 
 ## Configuração do banco de dados
 
@@ -30,19 +34,20 @@ Crie o banco de dados no MySQL:
 CREATE DATABASE bjj;
 ```
 
-A configuração padrão está em `src/main/resources/application.properties`:
+A aplicação utiliza as propriedades definidas em `src/main/resources/application.properties`:
 
 ```properties
-spring.datasource.url=jdbc:mysql://localhost:3306/bjj?useSSL=false&serverTimezone=UTC
+spring.datasource.url=jdbc:mysql://127.0.0.1:3306/bjj?useSSL=false&serverTimezone=UTC
 spring.datasource.username=root
 spring.datasource.password=
+spring.jpa.hibernate.ddl-auto=update
 ```
 
-Ajuste `spring.datasource.username` e `spring.datasource.password` conforme o seu ambiente. O Hibernate está configurado com `ddl-auto=update`, portanto as tabelas são atualizadas automaticamente durante a execução.
+Ajuste usuário, senha e URL conforme o seu ambiente. Com `ddl-auto=update`, o Hibernate cria ou atualiza as tabelas automaticamente durante a execução. Em ambientes reais, não versione credenciais no arquivo de configuração; prefira variáveis de ambiente ou uma configuração externa.
 
 ## Executando a aplicação
 
-No Windows, usando o Maven Wrapper:
+No Windows:
 
 ```powershell
 .\mvnw.cmd spring-boot:run
@@ -54,55 +59,49 @@ No Linux ou macOS:
 ./mvnw spring-boot:run
 ```
 
-A aplicação será iniciada, por padrão, em:
+A API será iniciada em `http://localhost:8080`.
 
-```text
-http://localhost:8080
-```
-
-Também é possível gerar o arquivo JAR e executá-lo:
+Para gerar e executar o JAR:
 
 ```bash
 ./mvnw clean package
 java -jar target/bjj-api-0.0.1-SNAPSHOT.jar
 ```
 
-No Windows, substitua `./mvnw` por `mvnw.cmd` quando necessário.
+No Windows, use `mvnw.cmd` no lugar de `./mvnw` quando necessário.
 
-## Endpoints disponíveis
+## Endpoints
 
-### Listar equipes
+Todos os endpoints de coleção seguem o padrão:
 
-```http
-GET /teams/
-```
+| Método | Rota | Descrição |
+| --- | --- | --- |
+| `GET` | `/teams` | Lista equipes |
+| `GET` | `/teams/{id}` | Busca uma equipe |
+| `POST` | `/teams` | Cria uma equipe |
+| `PUT` | `/teams/{id}` | Atualiza uma equipe |
+| `DELETE` | `/teams/{id}` | Remove uma equipe |
+| `GET` | `/athletes` | Lista atletas |
+| `GET` | `/athletes/{id}` | Busca um atleta |
+| `POST` | `/athletes` | Cria um atleta |
+| `PUT` | `/athletes/{id}` | Atualiza um atleta |
+| `DELETE` | `/athletes/{id}` | Remove um atleta |
+| `GET` | `/categories` | Lista categorias |
+| `GET` | `/categories/{id}` | Busca uma categoria |
+| `POST` | `/categories` | Cria uma categoria |
+| `PUT` | `/categories/{id}` | Atualiza uma categoria |
+| `DELETE` | `/categories/{id}` | Remove uma categoria |
+| `GET` | `/matches` | Lista lutas |
+| `GET` | `/matches/{id}` | Busca uma luta |
+| `POST` | `/matches` | Cria uma luta |
+| `PUT` | `/matches/{id}` | Atualiza uma luta |
+| `DELETE` | `/matches/{id}` | Remove uma luta |
 
-Exemplo:
+As operações de criação devem enviar `Content-Type: application/json`. Consultas de registros inexistentes retornam `404 Not Found`; criações retornam `201 Created`; remoções realizadas retornam `204 No Content`.
 
-```bash
-curl http://localhost:8080/teams/
-```
+### Exemplos de payloads
 
-### Buscar equipe por ID
-
-```http
-GET /teams/{id}
-```
-
-Exemplo:
-
-```bash
-curl http://localhost:8080/teams/1
-```
-
-### Criar equipe
-
-```http
-POST /teams
-Content-Type: application/json
-```
-
-Corpo da requisição:
+Criar uma equipe:
 
 ```json
 {
@@ -110,7 +109,46 @@ Corpo da requisição:
 }
 ```
 
-Exemplo:
+Criar uma categoria:
+
+```json
+{
+  "category_name": "Adulto Meio-Pesado",
+  "max_weight": 88.3,
+  "max_age": 30,
+  "belt": "Azul",
+  "gender": "Masculino"
+}
+```
+
+Criar um atleta associado a registros existentes:
+
+```json
+{
+  "name": "João Silva",
+  "team": { "id": 1 },
+  "category": { "id": 1 },
+  "age": 25,
+  "gender": "Masculino",
+  "weight": 82.5,
+  "belt": "Azul",
+  "isFighting": "Não"
+}
+```
+
+Criar uma luta:
+
+```json
+{
+  "athlete1": { "id": 1 },
+  "athlete2": { "id": 2 },
+  "category": { "id": 1 },
+  "winner": { "id": 1 },
+  "matchStatus": "Finalizada"
+}
+```
+
+Exemplo de requisição:
 
 ```bash
 curl -X POST http://localhost:8080/teams \
@@ -118,42 +156,16 @@ curl -X POST http://localhost:8080/teams \
   -d '{"teamName":"Equipe BJJ"}'
 ```
 
-### Atualizar equipe
+## Modelo de dados
 
-```http
-PUT /teams/{id}
-Content-Type: application/json
-```
+- `Team` possui vários `Athlete`.
+- `Category` possui vários `Athlete`.
+- `Athlete` pertence a uma `Team` e a uma `Category`.
+- `Match` referencia dois atletas, uma categoria e, opcionalmente, o vencedor.
 
-Corpo da requisição:
+Os relacionamentos são representados por IDs nos payloads JSON, como nos exemplos acima.
 
-```json
-{
-  "teamName": "Equipe BJJ Atualizada"
-}
-```
-
-Exemplo:
-
-```bash
-curl -X PUT http://localhost:8080/teams/1 \
-  -H "Content-Type: application/json" \
-  -d '{"teamName":"Equipe BJJ Atualizada"}'
-```
-
-### Excluir equipe
-
-```http
-DELETE /teams/{id}
-```
-
-Exemplo:
-
-```bash
-curl -X DELETE http://localhost:8080/teams/1
-```
-
-## Estrutura principal
+## Estrutura do projeto
 
 ```text
 src/main/java/com/estudos/bjj_api/
@@ -164,26 +176,30 @@ src/main/java/com/estudos/bjj_api/
 │   ├── Match.java
 │   └── Team.java
 ├── repositories/
+│   ├── AthleteRepository.java
+│   ├── CategoryRepository.java
+│   ├── MatchRepository.java
+│   └── TeamRepository.java
 ├── resources/
 │   ├── AthleteController.java
+│   ├── CategoryController.java
+│   ├── MatchController.java
 │   └── TeamController.java
 └── services/
     ├── AthleteService.java
+    ├── CategoryService.java
+    ├── MatchService.java
     └── TeamService.java
 ```
 
 - `entities`: entidades persistidas pelo JPA.
 - `repositories`: interfaces de acesso aos dados.
-- `services`: regras e operações de negócio.
+- `services`: operações de negócio e acesso aos repositórios.
 - `resources`: controllers responsáveis pelos endpoints HTTP.
 
 ## Testes
 
 Para executar os testes:
-
-```bash
-./mvnw test
-```
 
 No Windows:
 
@@ -191,13 +207,10 @@ No Windows:
 .\mvnw.cmd test
 ```
 
-## Observações
+No Linux ou macOS:
 
-- O MySQL precisa estar disponível antes de iniciar a aplicação.
-- A senha do banco não deve ser versionada em ambientes reais. Prefira variáveis de ambiente ou configuração externa.
-- O relacionamento entre `Team`, `Athlete` e `Category` está modelado nas entidades, mas os endpoints dessas funcionalidades ainda podem ser ampliados.
-=======
-# bjj_api
-API RESTful desenvolvida em Java com Spring Boot para gerenciamento de academias, equipes e chaves de torneios de Jiu-Jitsu. 🥋
->>>>>>> 53123799405274b50900b7e0ccf1cdf4647376e6
-# bjj_api
+```bash
+./mvnw test
+```
+
+Os testes de integração da aplicação podem exigir uma instância do MySQL disponível conforme a configuração do projeto.
