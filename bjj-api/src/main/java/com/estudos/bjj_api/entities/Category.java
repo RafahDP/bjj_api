@@ -3,6 +3,8 @@ package com.estudos.bjj_api.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -12,6 +14,7 @@ import jakarta.persistence.OneToMany;
 @Entity
 public class Category {
     @OneToMany (mappedBy = "category")
+    @JsonIgnore
     private List<Athlete> athletes = new ArrayList<>();
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

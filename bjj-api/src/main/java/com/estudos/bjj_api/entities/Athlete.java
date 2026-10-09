@@ -1,6 +1,8 @@
 package com.estudos.bjj_api.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,6 +20,7 @@ public class Athlete{
     private String name;
     @ManyToOne
     @JoinColumn(name = "team_id")
+    @JsonIgnore
     private Team team;
     @ManyToOne
     @JoinColumn(name = "category_id")
