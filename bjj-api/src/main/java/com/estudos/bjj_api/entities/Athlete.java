@@ -3,6 +3,7 @@ package com.estudos.bjj_api.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -10,6 +11,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+
+
 
 @Entity
 @Table (name = "athlete_tb")
@@ -29,7 +32,7 @@ public class Athlete{
     private String gender;
     private float weight;
     private String belt;
-    private String isFighting;
+    private Boolean isFighting;
     
     //construtors , getters and setters.
     public Athlete(){}
@@ -84,10 +87,10 @@ public class Athlete{
         return this.category;
     }
 
-    public void setIsFighting(String isFighting){
+    public void setIsFighting(Boolean isFighting){
         this.isFighting = isFighting;
     }
-    public String getIsFighting(){
+    public Boolean getIsFighting(){
         return this.isFighting;
     }
    
