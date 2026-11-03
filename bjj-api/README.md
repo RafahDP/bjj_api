@@ -132,7 +132,7 @@ Criar um atleta associado a registros existentes:
   "gender": "Masculino",
   "weight": 82.5,
   "belt": "Azul",
-  "isFighting": "Não"
+  "isFighting": false
 }
 ```
 
