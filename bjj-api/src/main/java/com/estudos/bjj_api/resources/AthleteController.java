@@ -19,43 +19,51 @@ import com.estudos.bjj_api.entities.Athlete;
 import com.estudos.bjj_api.services.AthleteService;
 
 @CrossOrigin(origins = "*")
-@RestController 
+@RestController
 @RequestMapping(value = "/athletes")
 public class AthleteController {
+
     private final AthleteService athleteService;
-     public AthleteController(AthleteService athleteService){
+
+    public AthleteController(AthleteService athleteService) {
         this.athleteService = athleteService;
     }
+
     @GetMapping("/{id}")
-    public ResponseEntity<Athlete> readById(@PathVariable Long id){
+    public ResponseEntity<Athlete> readById(@PathVariable Long id) {
         Optional<Athlete> athlete = athleteService.readById(id);
-        if(athlete.isPresent()){
+        if (athlete.isPresent()) {
             return ResponseEntity.ok(athlete.get());
         }
         return ResponseEntity.notFound().build();
     }
+
     @GetMapping
-    public List<Athlete> athleteList(){
+    public List<Athlete> athleteList() {
         return athleteService.getAllAthletes();
     }
-     @PostMapping
-    public ResponseEntity<Athlete> insertAthlete(@RequestBody Athlete athlete){
-       Athlete savadAthlete = athleteService.insertAthlete(athlete);
-       return ResponseEntity.status(HttpStatus.CREATED).body(savadAthlete);
+
+    @PostMapping
+    public ResponseEntity<Athlete> insertAthlete(@RequestBody Athlete athlete) {
+        System.out.println("Atleta recebido: " + athlete.getName() + " | Team ID: " + (athlete.getTeam() != null ? athlete.getTeam().getId() : "null"));
+        Athlete savadAthlete = athleteService.insertAthlete(athlete);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savadAthlete);
     }
-     @PutMapping("/{id}")
-    public ResponseEntity<Athlete> updateAthlete(@PathVariable  Long id, @RequestBody Athlete athlete){
-        Athlete updateAthlete = athleteService.updateAthlete(id,athlete);
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Athlete> updateAthlete(@PathVariable Long id, @RequestBody Athlete athlete) {
+        Athlete updateAthlete = athleteService.updateAthlete(id, athlete);
         return ResponseEntity.ok(updateAthlete);
     }
-     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteAthlete(@PathVariable Long id){
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteAthlete(@PathVariable Long id) {
         Optional<Athlete> athlete = athleteService.readById(id);
-        if( athlete.isPresent()){
+        if (athlete.isPresent()) {
             athleteService.delAthlete(id);
             return ResponseEntity.noContent().build();
         }
-        return ResponseEntity.notFound().build();    
+        return ResponseEntity.notFound().build();
     }
-    
+
 }
