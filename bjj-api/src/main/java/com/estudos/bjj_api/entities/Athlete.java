@@ -10,7 +10,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 
 @Entity
@@ -19,6 +21,7 @@ public class Athlete{
     @Id 
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private long id;
+    @NotBlank(message = "O nome do atleta não pode estar em branco")
     private String name;
     @ManyToOne
     @JoinColumn(name = "team_id")
@@ -27,9 +30,14 @@ public class Athlete{
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
+    @NotNull(message = "A idade é obrigatória")
+    @Positive(message = "A idade deve ser um valor positivo")
     private int age;
     private String gender;
+    @NotNull(message = "O peso é obrigatório")
+    @Positive(message = "O peso deve ser um valor positivo")
     private float weight;
+    @NotBlank(message = "A graduação (belt) é obrigatória")
     private String belt;
     private Boolean isFighting;
     
