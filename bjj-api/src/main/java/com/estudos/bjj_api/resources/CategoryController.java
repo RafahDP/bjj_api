@@ -19,43 +19,50 @@ import com.estudos.bjj_api.entities.Category;
 import com.estudos.bjj_api.services.CategoryService;
 
 @CrossOrigin(origins = "*")
-@RestController 
+@RestController
 @RequestMapping(value = "/categories")
 public class CategoryController {
+
     private final CategoryService categoryService;
-     public CategoryController(CategoryService categoryService){
+
+    public CategoryController(CategoryService categoryService) {
         this.categoryService = categoryService;
     }
-     @GetMapping("/{id}")
-    public ResponseEntity<Category> readById(@PathVariable Long id){
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Category> readById(@PathVariable Long id) {
         Optional<Category> category = categoryService.readById(id);
-        if(category.isPresent()){
+        if (category.isPresent()) {
             return ResponseEntity.ok(category.get());
         }
         return ResponseEntity.notFound().build();
     }
+
     @GetMapping
-    public List<Category> categoryList(){
+    public List<Category> categoryList() {
         return categoryService.getAllCategories();
     }
-     @PostMapping
-    public ResponseEntity<Category> insertCategory(@RequestBody Category category){
-       Category savedCategory = categoryService.insertCategory(category);
-       return ResponseEntity.status(HttpStatus.CREATED).body(savedCategory);
+
+    @PostMapping
+    public ResponseEntity<Category> insertCategory(@RequestBody Category category) {
+        Category savedCategory = categoryService.insertCategory(category);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedCategory);
     }
-     @PutMapping("/{id}")
-    public ResponseEntity<Category> updateCategory(@PathVariable  Long id, @RequestBody Category category){
-        Category updateCategory = categoryService.updateCategory(id,category);
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Category> updateCategory(@PathVariable Long id, @RequestBody Category category) {
+        Category updateCategory = categoryService.updateCategory(id, category);
         return ResponseEntity.ok(updateCategory);
     }
-     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCategory(@PathVariable Long id){
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteCategory(@PathVariable Long id) {
         Optional<Category> category = categoryService.readById(id);
-        if( category.isPresent()){
+        if (category.isPresent()) {
             categoryService.delCategory(id);
             return ResponseEntity.noContent().build();
         }
-        return ResponseEntity.notFound().build();    
+        return ResponseEntity.notFound().build();
     }
-    
+
 }

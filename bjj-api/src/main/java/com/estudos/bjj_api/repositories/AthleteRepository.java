@@ -6,7 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.estudos.bjj_api.entities.Athlete;
 
 @Repository
-public interface AthleteRepository extends JpaRepository<Athlete, Long>{
+public interface AthleteRepository extends JpaRepository<Athlete, Long> {
 
-    
 }

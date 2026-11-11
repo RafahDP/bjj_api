@@ -19,43 +19,50 @@ import com.estudos.bjj_api.entities.Match;
 import com.estudos.bjj_api.services.MatchService;
 
 @CrossOrigin(origins = "*")
-@RestController 
+@RestController
 @RequestMapping(value = "/matches")
 public class MatchController {
+
     private final MatchService matchService;
-    public MatchController(MatchService matchService){
+
+    public MatchController(MatchService matchService) {
         this.matchService = matchService;
     }
+
     @GetMapping("/{id}")
-    public ResponseEntity<Match> readById(@PathVariable Long id){
+    public ResponseEntity<Match> readById(@PathVariable Long id) {
         Optional<Match> match = matchService.readById(id);
-    if(match.isPresent()){
+        if (match.isPresent()) {
             return ResponseEntity.ok(match.get());
         }
         return ResponseEntity.notFound().build();
     }
+
     @GetMapping
-    public List<Match> matchList(){
+    public List<Match> matchList() {
         return matchService.getAllMatch();
     }
+
     @PostMapping
-    public ResponseEntity<Match> insertMatch(@RequestBody Match match){
-       Match savedMatch = matchService.insertMatch(match);
-       return ResponseEntity.status(HttpStatus.CREATED).body(savedMatch);
+    public ResponseEntity<Match> insertMatch(@RequestBody Match match) {
+        Match savedMatch = matchService.insertMatch(match);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedMatch);
     }
+
     @PutMapping("/{id}")
-    public ResponseEntity<Match> updateMatch(@PathVariable  Long id, @RequestBody Match match){
-        Match updateMatch = matchService.updateMatch(id,match);
+    public ResponseEntity<Match> updateMatch(@PathVariable Long id, @RequestBody Match match) {
+        Match updateMatch = matchService.updateMatch(id, match);
         return ResponseEntity.ok(updateMatch);
     }
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteMatch(@PathVariable Long id){
+    public ResponseEntity<Void> deleteMatch(@PathVariable Long id) {
         Optional<Match> match = matchService.readById(id);
-        if( match.isPresent()){
+        if (match.isPresent()) {
             matchService.delMatch(id);
             return ResponseEntity.noContent().build();
         }
-        return ResponseEntity.notFound().build();    
+        return ResponseEntity.notFound().build();
     }
-    
+
 }
