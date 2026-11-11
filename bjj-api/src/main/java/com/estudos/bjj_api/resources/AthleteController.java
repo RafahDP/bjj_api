@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.estudos.bjj_api.entities.Athlete;
 import com.estudos.bjj_api.services.AthleteService;
 
+import jakarta.validation.Valid;
+
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping(value = "/athletes")
@@ -44,14 +46,14 @@ public class AthleteController {
     }
 
     @PostMapping
-    public ResponseEntity<Athlete> insertAthlete(@RequestBody Athlete athlete) {
+    public ResponseEntity<Athlete> insertAthlete(@RequestBody @Valid Athlete athlete) {
         System.out.println("Atleta recebido: " + athlete.getName() + " | Team ID: " + (athlete.getTeam() != null ? athlete.getTeam().getId() : "null"));
         Athlete savadAthlete = athleteService.insertAthlete(athlete);
         return ResponseEntity.status(HttpStatus.CREATED).body(savadAthlete);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Athlete> updateAthlete(@PathVariable Long id, @RequestBody Athlete athlete) {
+    public ResponseEntity<Athlete> updateAthlete(@PathVariable Long id, @RequestBody @Valid Athlete athlete) {
         Optional<Athlete> existingAthlete = athleteService.readById(id);
         if (existingAthlete.isPresent()) {
             Athlete updatedAthlete = athleteService.updateAthlete(id, athlete);
